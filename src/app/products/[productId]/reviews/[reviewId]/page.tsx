@@ -1,15 +1,18 @@
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
+import { use } from "react";
 
-export default async function productReviews({
+export default function ProductReviews({
   params,
 }: {
-  params: { productId: string; reviewId: string };
+  params: Promise<{ productId: string; reviewId: string }>;
 }) {
-  const reviewId = params.reviewId;
-  const productId = params.productId;
+  // ✅ Unwrap the promise
+  const { productId, reviewId } = use(params);
+
   if (parseInt(reviewId) > 100) {
-    return notFound();
+    redirect("/");
   }
+
   return (
     <>
       <h1>Product Name {productId}</h1>
